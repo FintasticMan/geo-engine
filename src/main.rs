@@ -10,7 +10,7 @@ fn ipv6_is_eligible(ip: Ipv6Addr) -> bool {
 fn main() -> Result<()> {
     let ips: Vec<IpNetwork> = datalink::interfaces()
         .into_iter()
-        .filter(|i| i.is_up() && !i.is_loopback() && !i.ips.is_empty())
+        .filter(|i| i.is_up() && !i.is_loopback())
         .flat_map(|i| {
             i.ips.into_iter().filter(|ip| match ip {
                 IpNetwork::V6(ip) if ipv6_is_eligible(ip.ip()) => true,
