@@ -3,35 +3,8 @@ use std::net::Ipv6Addr;
 use anyhow::{bail, Result};
 use pnet::{datalink, ipnetwork::IpNetwork};
 
-// fn ipv6_is_eligible(ip: Ipv6Addr) -> bool {
-//     !ip.is_unspecified()
-//         && !ip.is_loopback()
-//         && !ip.is_unique_local()
-//         && !ip.is_unicast_link_local()
-// }
-
 fn ipv6_is_eligible(ip: Ipv6Addr) -> bool {
-    if ip.is_unspecified() {
-        eprintln!("IP is unspecified: {ip}");
-        return false;
-    }
-
-    if ip.is_loopback() {
-        eprintln!("IP is loopback: {ip}");
-        return false;
-    }
-
-    if ip.is_unique_local() {
-        eprintln!("IP is unique local: {ip}");
-        return false;
-    }
-
-    if ip.is_unicast_link_local() {
-        eprintln!("IP is unicast link local: {ip}");
-        return false;
-    }
-
-    true
+    !ip.is_unspecified() && !ip.is_loopback() && !ip.is_unicast_link_local()
 }
 
 fn main() -> Result<()> {
@@ -51,7 +24,7 @@ fn main() -> Result<()> {
     }
 
     for ip in ips.into_iter() {
-        println!("{ip} 1;");
+        println!("{}/{} 1;", ip.network(), ip.prefix());
     }
 
     Ok(())
